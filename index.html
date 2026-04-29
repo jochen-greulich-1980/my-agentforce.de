@@ -95,20 +95,20 @@
       embeddedservice_bootstrap.settings.language = 'de';
       embeddedservice_bootstrap.init(
         '00D9V00000SLEUU',
-        'Kia_AI_Support_Agent_Test',
-        'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaAISupportAgentT1776944043291',
-        {
-          scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
+				'Kia_AI_Support_Agent_Test_DE',
+				'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaAISupportAgentT1777442874418',
+				{
+					scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
         }
       );
       
-      // WebV2: window-Event statt addEventHandler
+      /* WebV2: window-Event statt addEventHandler
       window.addEventListener('onEmbeddedMessagingReady', () => {
          console.log('Ready – setting hidden fields');
          embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
            currentUrl: window.location.href
          });
-      });
+      });*/
 
     } catch (err) {
       console.error('Error loading Embedded Messaging: ', err);
