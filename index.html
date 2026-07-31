@@ -92,31 +92,22 @@
 <script type='text/javascript'>
   function initEmbeddedMessaging() {
     try {
-      embeddedservice_bootstrap.settings.language = 'de';
+      embeddedservice_bootstrap.settings.language = 'fi_FI';
       embeddedservice_bootstrap.init(
         '00D9V00000SLEUU',
-				'Kia_AI_Support_Agent_Test_DE',
-				'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaAISupportAgentT1777442874418',
-				{
-					scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
+        'Kia_Connect_Web_Chat',
+        'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectWebChat1784801498087',
+        {
+          scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
         }
       );
-      
-      /* WebV2: window-Event statt addEventHandler
-      window.addEventListener('onEmbeddedMessagingReady', () => {
-         console.log('Ready – setting hidden fields');
-         embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-           currentUrl: window.location.href
-         });
-      });*/
-
     } catch (err) {
       console.error('Error loading Embedded Messaging: ', err);
     }
   }
 </script>
 <script type='text/javascript'
-  src='https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaAISupportAgentT1776944043291/assets/js/bootstrap.min.js'
+  src='https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectWebChat1784801498087/assets/js/bootstrap.min.js'
   onload='initEmbeddedMessaging()'>
 </script>
 </body>
