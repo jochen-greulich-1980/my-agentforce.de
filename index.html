@@ -92,22 +92,30 @@
 <script type='text/javascript'>
   function initEmbeddedMessaging() {
     try {
-      embeddedservice_bootstrap.settings.language = 'fi';
+      embeddedservice_bootstrap.settings.language = 'en_US';
       embeddedservice_bootstrap.init(
         '00D9V00000SLEUU',
-        'Kia_Connect_Web_Chat',
-        'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectWebChat1784801498087',
+        'Kia_Connect_App_Chat',
+        'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectAp1789380016745',
         {
           scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
         }
       );
+
+      window.addEventListener("onEmbeddedMessagingReady", () => {
+				embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+					"appVIN": "123456",
+					"appEmail": "jochen.greulich@mhp.com"
+				});
+			});
+      
     } catch (err) {
       console.error('Error loading Embedded Messaging: ', err);
     }
   }
 </script>
 <script type='text/javascript'
-  src='https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectWebChat1784801498087/assets/js/bootstrap.min.js'
+  src='https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectAp1789380016745/assets/js/bootstrap.min.js'
   onload='initEmbeddedMessaging()'>
 </script>
 </body>
