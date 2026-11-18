@@ -197,7 +197,7 @@
 	    match = document.documentElement.lang.match(/^([a-z]{2})[-_]([a-z]{2})/i);
 	  }
 
-	  const languageParam = urlParams.get('language') || (match ? match[1].toLowerCase() : 'en_US');
+	  const languageParam = urlParams.get('language') || (match ? match[1].toLowerCase() : 'de');
 	  const countryParam  = urlParams.get('country')  || (match ? match[2].toLowerCase() : 'de');
 	
 	  console.log('Pfad:', window.location.pathname, '→ language:', languageParam, 'country:', countryParam);
