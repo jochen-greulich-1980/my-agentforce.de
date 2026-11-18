@@ -69,55 +69,153 @@
       text-align: center;
       color: #888;
     }
+
+    /* --- Widget unlock prompt --- */
+    #widgetGate {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      padding: 16px;
+      width: 240px;
+      z-index: 20;
+    }
+    #widgetGate h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: #333;
+    }
+    #widgetGate input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    #widgetGate button {
+      width: 100%;
+      padding: 8px 10px;
+      background: #0176d3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    #widgetGate button:hover {
+      background: #015ba7;
+    }
+    #widgetGate .error {
+      color: #c0392b;
+      font-size: 11px;
+      margin-top: 6px;
+      min-height: 14px;
+    }
   </style>
 </head>
 <body>
+
 <div class="container">
   <div class="header">
     AI Support Agent - Test
   </div>
   <div class="content">
     <div class="placeholder">
-      Diese Seite integriert das <b>Enhanced Messaging v2</b> Chat Feature von Salesforce.
+      This page integrates the <b>Enhanced Messaging v2</b> chat feature from Salesforce.
       <br><br>
     </div>
     <div class="badge">
-      Das Chat Widget wird dynamisch rechts unten im Browserfenster eingeblendet.
+      The chat widget is dynamically displayed in the bottom right corner of the browser window.
     </div>
   </div>
   <div class="footer">
-    Testumgebung
+    test environment
   </div>
 </div>
-<!--<script type='text/javascript'>
+
+<div id="widgetGate">
+  <h3>Enable Chat Widget</h3>
+  <input type="password" id="pwInput" placeholder="Enter password to load chat widget" autocomplete="off" />
+  <button onclick="checkPassword()">OK</button>
+  <div class="error" id="pwError"></div>
+</div>
+
+<script>
+  // Einfache clientseitige Sperre — kein echter Sicherheitsmechanismus,
+  // nur zum Fernhalten zufälliger Besucher auf einer Testseite.
+  const CORRECT_PASSWORD_HASH = "3fb1e39508dad9ef90dd0c00cb6e5cd5d89f4b5c1ea2cae179a57010149cabb1";
+
+  async function sha256(text) {
+    const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  async function checkPassword() {
+    const input = document.getElementById("pwInput").value;
+    const inputHash = await sha256(input);
+    if (inputHash === CORRECT_PASSWORD_HASH) {
+      sessionStorage.setItem("widget_pw_ok", "1");
+      document.getElementById("widgetGate").style.display = "none";
+      loadWidgetScript();
+    } else {
+      document.getElementById("pwError").textContent = "Wrong password.";
+    }
+  }
+
+  document.getElementById("pwInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkPassword();
+  });
+
+  function loadWidgetScript() {
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://zumtobelgroupag--devagentic.sandbox.my.site.com/ESWZGRPCustomer1794846987260/assets/js/bootstrap.min.js";
+    script.onload = initEmbeddedMessaging;
+    document.body.appendChild(script);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("widget_pw_ok") === "1") {
+      document.getElementById("widgetGate").style.display = "none";
+      loadWidgetScript();
+    }
+  });
+
   function initEmbeddedMessaging() {
-    try {
-      embeddedservice_bootstrap.settings.language = 'en_US';
+    try { 	  
+      const urlParams = new URLSearchParams(window.location.search);
+      
+	  // Pfad z. B. "/de-de" → "de" und "de" extrahieren
+	  const pathMatch = window.location.pathname.match(/^\/([a-z]{2})-([a-z]{2})(?:\/|$)/i);
+	
+	  const languageParam = urlParams.get('language') || (pathMatch ? pathMatch[1].toLowerCase() : 'en_US');
+	  const countryParam  = urlParams.get('country')  || (pathMatch ? pathMatch[2].toLowerCase() : 'de');
+		
+      embeddedservice_bootstrap.settings.language = languageParam;
       embeddedservice_bootstrap.init(
-        '00D9V00000SLEUU',
-        'Kia_Connect_App_Chat',
-        'https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectAp1789380016745',
+        '00DS800000PdtW7',
+        'ZGRP_Customer_AI_Assistant_Web',
+        'https://zumtobelgroupag--devagentic.sandbox.my.site.com/ESWZGRPCustomer1794846987260',
         {
-          scrt2URL: 'https://kiauvocdp--agentforce.sandbox.my.salesforce-scrt.com'
+          scrt2URL: 'https://zumtobelgroupag--devagentic.sandbox.my.salesforce-scrt.com'
         }
       );
 
+	  /*
       window.addEventListener("onEmbeddedMessagingReady", () => {
 				embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-					"appVIN": "123456",
-					"appEmail": "jochen.greulich@mhp.com",
-					"appCountry": "de"
+					"webCountry": countryParam
 				});
-			});
+			});*/
       
     } catch (err) {
       console.error('Error loading Embedded Messaging: ', err);
     }
   }
 </script>
-<script type='text/javascript'
-  src='https://kiauvocdp--agentforce.sandbox.my.site.com/ESWKiaConnectAp1789380016745/assets/js/bootstrap.min.js'
-  onload='initEmbeddedMessaging()'>
-</script>-->
 </body>
 </html>
