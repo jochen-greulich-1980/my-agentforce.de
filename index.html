@@ -147,7 +147,7 @@
 <script>
   // Einfache clientseitige Sperre — kein echter Sicherheitsmechanismus,
   // nur zum Fernhalten zufälliger Besucher auf einer Testseite.
-  const CORRECT_PASSWORD_HASH = "3fb1e39508dad9ef90dd0c00cb6e5cd5d89f4b5c1ea2cae179a57010149cabb1";
+  const CORRECT_PASSWORD_HASH = "df15bd5a805209fca8455a64bd0d0967329fa495eb399a216713f6d35af90a22";
 
   async function sha256(text) {
     const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -188,12 +188,19 @@
   function initEmbeddedMessaging() {
     try { 	  
       const urlParams = new URLSearchParams(window.location.search);
-      
-	  // Pfad z. B. "/de-de" → "de" und "de" extrahieren
-	  const pathMatch = window.location.pathname.match(/^\/([a-z]{2})-([a-z]{2})(?:\/|$)/i);
+
+	  // 1. xx-xx irgendwo im Pfad suchen (z. B. /de-de, /de-de.html, /content/x/de-at/...)
+	  let match = window.location.pathname.match(/(?:^|\/)([a-z]{2})-([a-z]{2})(?=\/|\.|$)/i);
 	
-	  const languageParam = urlParams.get('language') || (pathMatch ? pathMatch[1].toLowerCase() : 'en_US');
-	  const countryParam  = urlParams.get('country')  || (pathMatch ? pathMatch[2].toLowerCase() : 'de');
+	  // 2. Fallback: <html lang="de-DE">
+	  if (!match && document.documentElement.lang) {
+	    match = document.documentElement.lang.match(/^([a-z]{2})[-_]([a-z]{2})/i);
+	  }
+
+	  const languageParam = urlParams.get('language') || (match ? match[1].toLowerCase() : 'en_US');
+	  const countryParam  = urlParams.get('country')  || (match ? match[2].toLowerCase() : 'de');
+	
+	  console.log('Pfad:', window.location.pathname, '→ language:', languageParam, 'country:', countryParam);
 		
       embeddedservice_bootstrap.settings.language = languageParam;
       embeddedservice_bootstrap.init(
